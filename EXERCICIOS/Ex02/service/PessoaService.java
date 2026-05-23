@@ -6,8 +6,20 @@ import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * Serviço responsável pelas operações de CRUD de pessoas.
+ * Implementa a interface {@link Servico} e contém as regras
+ * de validação e manipulação dos dados.
+ */
 public class PessoaService implements Servico {
 
+    /**
+     * Adiciona uma pessoa ao mapa de cadastros.
+     * Verifica se a pessoa é válida e se o CPF já está cadastrado.
+     *
+     * @param pessoa  objeto {@link Pessoa} a ser adicionado
+     * @param pessoas mapa com os cadastros existentes (chave: CPF)
+     */
     @Override
     public void adicionar(Pessoa pessoa, HashMap<String, Pessoa> pessoas) {
         try {
@@ -29,6 +41,13 @@ public class PessoaService implements Servico {
         }
     }
 
+    /**
+     * Coleta os dados do usuário via terminal e cria um objeto {@link Pessoa}.
+     * Retorna {@code null} se algum dado for inválido após as tentativas permitidas.
+     *
+     * @param sc Scanner para leitura da entrada do usuário
+     * @return objeto {@link Pessoa} criado, ou {@code null} em caso de erro
+     */
     @Override
     public Pessoa criarPessoa(Scanner sc) {
 
@@ -49,6 +68,12 @@ public class PessoaService implements Servico {
         }
     }
 
+    /**
+     * Remove uma pessoa do mapa de cadastros pelo CPF.
+     *
+     * @param cpf     CPF da pessoa a ser removida
+     * @param pessoas mapa com os cadastros existentes (chave: CPF)
+     */
     @Override
     public void remover(String cpf, HashMap<String, Pessoa> pessoas) {
 
@@ -68,6 +93,13 @@ public class PessoaService implements Servico {
         }
     }
 
+    /**
+     * Lê e valida a opção digitada pelo usuário no menu.
+     * Aceita apenas valores entre 1 e 6.
+     *
+     * @param sc Scanner para leitura da entrada do usuário
+     * @return opção válida digitada, ou {@code 0} em caso de entrada inválida
+     */
     @Override
     public int lerOpcao(Scanner sc) {
 
@@ -92,6 +124,15 @@ public class PessoaService implements Servico {
         }
     }
 
+    /**
+     * Lê e valida um CPF via terminal.
+     * Remove caracteres não numéricos e aceita apenas 11 dígitos.
+     * Permite até 3 tentativas.
+     *
+     * @param sc Scanner para leitura da entrada do usuário
+     * @return CPF válido contendo apenas os 11 dígitos
+     * @throws IllegalArgumentException se as 3 tentativas forem esgotadas
+     */
     @Override
     public String lerCPF(Scanner sc) {
 
@@ -117,6 +158,15 @@ public class PessoaService implements Servico {
         throw new IllegalArgumentException("Tentativas excedidas.");
     }
 
+    /**
+     * Lê e valida um nome via terminal.
+     * Aceita apenas letras (incluindo acentuadas) e espaços.
+     * Permite até 3 tentativas.
+     *
+     * @param sc Scanner para leitura da entrada do usuário
+     * @return nome válido digitado pelo usuário
+     * @throws IllegalArgumentException se as 3 tentativas forem esgotadas
+     */
     @Override
     public String lerName(Scanner sc) {
 
@@ -150,6 +200,15 @@ public class PessoaService implements Servico {
         throw new IllegalArgumentException("Tentativas excedidas.");
     }
 
+    /**
+     * Lê e valida um endereço de e-mail via terminal.
+     * Utiliza regex para verificar o formato básico do e-mail.
+     * Permite até 3 tentativas.
+     *
+     * @param sc Scanner para leitura da entrada do usuário
+     * @return e-mail válido digitado pelo usuário
+     * @throws IllegalArgumentException se as 3 tentativas forem esgotadas
+     */
     @Override
     public String lerGmail(Scanner sc) {
 
@@ -173,6 +232,15 @@ public class PessoaService implements Servico {
         throw new IllegalArgumentException("Tentativas excedidas.");
     }
 
+    /**
+     * Lê e valida um endereço residencial via terminal.
+     * Rejeita entradas em branco.
+     * Permite até 3 tentativas.
+     *
+     * @param sc Scanner para leitura da entrada do usuário
+     * @return endereço válido digitado pelo usuário
+     * @throws IllegalArgumentException se as 3 tentativas forem esgotadas
+     */
     @Override
     public String lerEndereco(Scanner sc) {
 
@@ -196,6 +264,15 @@ public class PessoaService implements Servico {
         throw new IllegalArgumentException("Tentativas excedidas.");
     }
 
+    /**
+     * Lê e valida um número de telefone com DDD via terminal.
+     * Remove caracteres não numéricos e aceita apenas 11 dígitos.
+     * Permite até 3 tentativas.
+     *
+     * @param sc Scanner para leitura da entrada do usuário
+     * @return telefone válido contendo apenas os 11 dígitos
+     * @throws IllegalArgumentException se as 3 tentativas forem esgotadas
+     */
     @Override
     public String lerTelefone(Scanner sc) {
 
@@ -221,6 +298,14 @@ public class PessoaService implements Servico {
         throw new IllegalArgumentException("Tentativas excedidas.");
     }
 
+    /**
+     * Atualiza os dados de uma pessoa cadastrada.
+     * Exibe um submenu com os campos disponíveis para alteração.
+     *
+     * @param cpf     CPF da pessoa a ser atualizada
+     * @param pessoas mapa com os cadastros existentes (chave: CPF)
+     * @param sc      Scanner para leitura da entrada do usuário
+     */
     @Override
     public void atualizarDados(String cpf, HashMap<String, Pessoa> pessoas, Scanner sc) {
 
@@ -293,6 +378,12 @@ public class PessoaService implements Servico {
         }
     }
 
+    /**
+     * Lista todas as pessoas cadastradas em ordem alfabética pelo nome.
+     * Utiliza Streams API para ordenação.
+     *
+     * @param pessoas mapa com os cadastros existentes (chave: CPF)
+     */
     @Override
     public void imprime(HashMap<String, Pessoa> pessoas) {
 
@@ -303,6 +394,13 @@ public class PessoaService implements Servico {
                 .forEach(System.out::println);
     }
 
+    /**
+     * Busca e exibe os dados de uma pessoa pelo CPF.
+     * Remove caracteres não numéricos antes de validar.
+     *
+     * @param cpf     CPF da pessoa a ser buscada
+     * @param pessoas mapa com os cadastros existentes (chave: CPF)
+     */
     @Override
     public void buscar(String cpf, HashMap<String, Pessoa> pessoas) {
 
@@ -326,6 +424,9 @@ public class PessoaService implements Servico {
         }
     }
 
+    /**
+     * Exibe o menu principal do sistema no terminal.
+     */
     @Override
     public void menu() {
 
@@ -342,6 +443,9 @@ public class PessoaService implements Servico {
         System.out.println("Digite a opção:");
     }
 
+    /**
+     * Exibe o submenu de alteração de dados no terminal.
+     */
     @Override
     public void menuDados() {
 
